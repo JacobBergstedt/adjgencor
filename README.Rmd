@@ -33,12 +33,38 @@ devtools::install_github("JacobBergstedt/adjgencor")
 
 ## Example
 
-We compute genetic correlation of major depressive disorder (MDD) with coronary artery disease (CAD) using the Als et al. Nature medicine 2023 and Aragam et al. Nature genetics 2022 summary statistics. We then compute the genetic correlation adjusted on BMI using the Yengo et al. Hum Mol Gen 2018 sumstats. You can see that BMI explains a small amount of genetic correlation MDD and CAD.
+We compute genetic correlation of major depressive disorder (MDD) with coronary artery disease (CAD) using the Als et al. Nature medicine 2023 and Aragam et al. Nature genetics 2022 summary statistics. We then compute the genetic correlation adjusted on BMI using the Yengo et al. Hum Mol Gen 2018 sumstats. You can see that BMI explains a small amount of genetic correlation MDD and CAD. Note that sumstats and reference LDScore are not include, you have to download them yourself and setup the correct file structure. 
 
 ```{r example}
 library(adjgencor)
 library(tidyverse)
-gen_cor_unadjusted <- adjgencor("CAD", "MDD", NULL, "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", "Data/MDDAls2023.sumstats.gz", NULL, 0.15, 0.15, NULL, 0.15, 0.15, NULL, "REF/eur_w_ld_chr/")
-gen_cor_adjusted <- adjgencor("CAD", "MDD", "BMI", "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", "Data/MDDAls2023.sumstats.gz", "Data/GIANT_UKB_2018_BMI_munged.txt", 0.15, 0.15, NA, 0.15, 0.15, NA, "REF/eur_w_ld_chr/")
+gen_cor_unadjusted <- adjgencor(TraitX = "CAD", 
+                                TraitY = "MDD", 
+                                Traits_to_adjust_for = NULL, 
+                                Trait_X_path = "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", 
+                                Trait_Y_path = "Data/MDDAls2023.sumstats.gz", 
+                                Traits_to_adjust_for_paths = NULL, 
+                                Trait_X_sample_prev = 0.15, 
+                                Trait_Y_sample_prev = 0.15, 
+                                Traits_to_adjust_for_sample_prev = NULL, 
+                                Trait_X_pop_prev = 0.15, 
+                                Trait_Y_pop_prev = 0.15, 
+                                Traits_to_adjust_for_pop_prev = NULL, 
+                                path_to_LD_scores = "REF/eur_w_ld_chr/")
+gen_cor_adjusted <- adjgencor(TraitX = "CAD", 
+                              TraitY = "MDD", 
+                              Traits_to_adjust_for = "BMI", 
+                              Trait_X_path = "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", 
+                              Trait_Y_path = "Data/MDDAls2023.sumstats.gz", 
+                              Traits_to_adjust_for_paths = "Data/GIANT_UKB_2018_BMI_munged.txt", 
+                              Trait_X_sample_prev = 0.15, 
+                              Trait_Y_sample_prev = 0.15, 
+                              Traits_to_adjust_for_sample_prev = NA, 
+                              Trait_X_pop_prev = 0.15, 
+                              Trait_Y_pop_prev = 0.15, 
+                              Traits_to_adjust_for_pop_prev = NA, 
+                              path_to_LD_scores = "REF/eur_w_ld_chr/")
 bind_rows(gen_cor_unadjusted, gen_cor_adjusted)
 ```
+
+

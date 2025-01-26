@@ -26,13 +26,27 @@ coronary artery disease (CAD) using the Als et al. Nature medicine 2023
 and Aragam et al. Nature genetics 2022 summary statistics. We then
 compute the genetic correlation adjusted on BMI using the Yengo et
 al. Hum Mol Gen 2018 sumstats. You can see that BMI explains a small
-amount of genetic correlation MDD and CAD.
+amount of genetic correlation MDD and CAD. Note that sumstats and
+reference LDScore are not include, you have to download them yourself
+and setup the correct file structure.
 
 ``` r
 library(adjgencor)
 library(tidyverse)
-gen_cor_unadjusted <- adjgencor("CAD", "MDD", NULL, "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", "Data/MDDAls2023.sumstats.gz", NULL, 0.15, 0.15, NULL, 0.15, 0.15, NULL, "REF/eur_w_ld_chr/")
-#> Multivariate ld-score regression of 2 traits (Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt Data/MDDAls2023.sumstats.gz) began at: 2025-01-26 12:33:37
+gen_cor_unadjusted <- adjgencor(TraitX = "CAD", 
+                                TraitY = "MDD", 
+                                Traits_to_adjust_for = NULL, 
+                                Trait_X_path = "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", 
+                                Trait_Y_path = "Data/MDDAls2023.sumstats.gz", 
+                                Traits_to_adjust_for_paths = NULL, 
+                                Trait_X_sample_prev = 0.15, 
+                                Trait_Y_sample_prev = 0.15, 
+                                Traits_to_adjust_for_sample_prev = NULL, 
+                                Trait_X_pop_prev = 0.15, 
+                                Trait_Y_pop_prev = 0.15, 
+                                Traits_to_adjust_for_pop_prev = NULL, 
+                                path_to_LD_scores = "REF/eur_w_ld_chr/")
+#> Multivariate ld-score regression of 2 traits (Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt Data/MDDAls2023.sumstats.gz) began at: 2025-01-26 12:44:18
 #> Reading in LD scores
 #> Read in summary statistics [1/2] from: Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt
 #> Out of 1198398 SNPs, 1180102 remain after merging with LD-score files
@@ -74,17 +88,29 @@ gen_cor_unadjusted <- adjgencor("CAD", "MDD", NULL, "Data/CARDIoGRAMplusC4D_2022
 #> Total Liability Scale h2: 0.1057 (0.0038)
 #> Genetic Correlation Results
 #> Genetic Correlation between CAD and MDD: 0.2462 (0.0188)
-#> LDSC finished running at 2025-01-26 12:34:02
-#> Running LDSC for all files took 0 minutes and 24 seconds
+#> LDSC finished running at 2025-01-26 12:44:45
+#> Running LDSC for all files took 0 minutes and 27 seconds
 #> [1] "Running primary model"
 #> [1] "Calculating CFI"
 #> [1] "Calculating Standardized Results"
 #> [1] "Calculating SRMR"
 #> elapsed 
-#>    0.36 
+#>    0.44 
 #> [1] "Model fit statistics are all printed as NA as you have specified a fully saturated model (i.e., df = 0)"
-gen_cor_adjusted <- adjgencor("CAD", "MDD", "BMI", "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", "Data/MDDAls2023.sumstats.gz", "Data/GIANT_UKB_2018_BMI_munged.txt", 0.15, 0.15, NA, 0.15, 0.15, NA, "REF/eur_w_ld_chr/")
-#> Multivariate ld-score regression of 3 traits (Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt Data/MDDAls2023.sumstats.gz Data/GIANT_UKB_2018_BMI_munged.txt) began at: 2025-01-26 12:34:02
+gen_cor_adjusted <- adjgencor(TraitX = "CAD", 
+                              TraitY = "MDD", 
+                              Traits_to_adjust_for = "BMI", 
+                              Trait_X_path = "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", 
+                              Trait_Y_path = "Data/MDDAls2023.sumstats.gz", 
+                              Traits_to_adjust_for_paths = "Data/GIANT_UKB_2018_BMI_munged.txt", 
+                              Trait_X_sample_prev = 0.15, 
+                              Trait_Y_sample_prev = 0.15, 
+                              Traits_to_adjust_for_sample_prev = NA, 
+                              Trait_X_pop_prev = 0.15, 
+                              Trait_Y_pop_prev = 0.15, 
+                              Traits_to_adjust_for_pop_prev = NA, 
+                              path_to_LD_scores = "REF/eur_w_ld_chr/")
+#> Multivariate ld-score regression of 3 traits (Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt Data/MDDAls2023.sumstats.gz Data/GIANT_UKB_2018_BMI_munged.txt) began at: 2025-01-26 12:44:46
 #> Reading in LD scores
 #> Read in summary statistics [1/3] from: Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt
 #> Out of 1198398 SNPs, 1180102 remain after merging with LD-score files
@@ -159,14 +185,14 @@ gen_cor_adjusted <- adjgencor("CAD", "MDD", "BMI", "Data/CARDIoGRAMplusC4D_2022_
 #> Genetic Correlation between CAD and MDD: 0.2462 (0.0188)
 #> Genetic Correlation between CAD and BMI: 0.2906 (0.0184)
 #> Genetic Correlation between MDD and BMI: 0.1385 (0.016)
-#> LDSC finished running at 2025-01-26 12:34:46
-#> Running LDSC for all files took 0 minutes and 43 seconds
+#> LDSC finished running at 2025-01-26 12:45:23
+#> Running LDSC for all files took 0 minutes and 37 seconds
 #> [1] "Running primary model"
 #> [1] "Calculating CFI"
 #> [1] "Calculating Standardized Results"
 #> [1] "Calculating SRMR"
 #> elapsed 
-#>    0.41 
+#>    0.66 
 #> [1] "Model fit statistics are all printed as NA as you have specified a fully saturated model (i.e., df = 0)"
 bind_rows(gen_cor_unadjusted, gen_cor_adjusted)
 #> # A tibble: 2 x 6
