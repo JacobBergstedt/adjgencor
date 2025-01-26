@@ -1,0 +1,58 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# adjgencor
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+adjgencor is an R package to compute GWAS-based genetic correlation between two traits adjusted for the genetic component of other traits.
+
+## Installation
+
+You can install the development version of adjgencor from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("JacobBergstedt/adjgencor")
+```
+
+## Example
+
+We compute genetic correlation of major depressive disorder (MDD) with coronary artery disease (CAD) using the Als et al. Nature medicine 2023 and Aragam et al. Nature genetics 2022 summary statistics. We then compute the genetic correlation adjusted on BMI using the Yengo et al. Hum Mol Gen 2018 sumstats. 
+
+```{r example}
+library(adjgencor)
+library(tidyverse)
+gen_cor_unadjusted <- adjgencor("CAD", "MDD", NULL, "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", "Data/MDDAls2023.sumstats.gz", NULL, 0.15, 0.15, NULL, 0.15, 0.15, NULL, "REF/eur_w_ld_chr/")
+gen_cor_adjusted <- adjgencor("CAD", "MDD", "BMI", "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", "Data/MDDAls2023.sumstats.gz", "Data/GIANT_UKB_2018_BMI_munged.txt", 0.15, 0.15, NA, 0.15, 0.15, NA, "REF/eur_w_ld_chr/")
+bind_rows(gen_cor_unadjusted,gen_cor_unadjusted)
+```
+
+What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+
+```{r cars}
+summary(cars)
+```
+
+You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
+
+You can also embed plots, for example:
+
+```{r pressure, echo = FALSE}
+plot(pressure)
+```
+
+In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.

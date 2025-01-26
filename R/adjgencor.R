@@ -70,6 +70,23 @@ fit_adjusted_model <- function(TraitX, TraitY, Traits_to_adjust_for, gen_cov) {
 
 }
 
+fit_unadjusted_model <- function(TraitX, TraitY, gen_cov = gen_cov) {
+
+  res_traits <- tibble::tibble(TraitX = TraitX, TraitY = TraitY)
+  spec <- glue::glue("T1 =~ {TraitX}", "T2 =~ {TraitY}", .sep = "\n")
+  m <- GenomicSEM::usermodel(gen_cov,
+                 estimation = "DWLS",
+                 model = spec,
+                 CFIcalc = TRUE,
+                 std.lv = TRUE,
+                 imp_cov = FALSE)
+  res <- get_cor(m$results)
+  res$Adjust_for <- "Nothing"
+  dplyr::bind_cols(res_traits, res)
+
+
+}
+
 
 #' @export
 adjgencor <- function(TraitX,
@@ -77,13 +94,13 @@ adjgencor <- function(TraitX,
                       Traits_to_adjust_for,
                       Trait_X_path,
                       Trait_Y_path,
-                      Traits_to_adjust_for_paths,
+                      Traits_to_adjust_for_paths = NULL,
                       Trait_X_sample_prev,
                       Trait_Y_sample_prev,
-                      Traits_to_adjust_for_sample_prev,
+                      Traits_to_adjust_for_sample_prev = NULL,
                       Trait_X_pop_prev,
                       Trait_Y_pop_prev,
-                      Traits_to_adjust_for_pop_prev,
+                      Traits_to_adjust_for_pop_prev = NULL,
                       path_to_LD_scores) {
 
 
@@ -102,6 +119,15 @@ adjgencor <- function(TraitX,
                          Traits_to_adjust_for_pop_prev,
                          path_to_LD_scores)
 
-  fit_adjusted_model(TraitX, TraitY, Traits_to_adjust_for = Traits_to_adjust_for, gen_cov = gen_cov)
+  if (is.null(Traits_to_adjust_for_paths) & is.null(Traits_to_adjust_for_sample_prev) & is.null(Traits_to_adjust_for_pop_prev)) {
+
+    fit_unadjusted_model(TraitX, TraitY, gen_cov)
+
+  } else {
+
+    fit_adjusted_model(TraitX, TraitY, Traits_to_adjust_for = Traits_to_adjust_for, gen_cov = gen_cov)
+
+  }
+
 
 }
