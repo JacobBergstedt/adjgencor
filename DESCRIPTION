@@ -13,3 +13,5 @@ Imports:
     dplyr,
     GenomicSEM,
     tibble
+URL: https://github.com/JacobBergstedt/adjgencor
+BugReports: https://github.com/JacobBergstedt/adjgencor/issues
