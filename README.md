@@ -25,71 +25,14 @@ We compute genetic correlation of major depressive disorder (MDD) with
 coronary artery disease (CAD) using the Als et al. Nature medicine 2023
 and Aragam et al. Nature genetics 2022 summary statistics. We then
 compute the genetic correlation adjusted on BMI using the Yengo et
-al. Hum Mol Gen 2018 sumstats.
+al. Hum Mol Gen 2018 sumstats. You can see that BMI explains a small
+amount of genetic correlation MDD and CAD.
 
 ``` r
 library(adjgencor)
 library(tidyverse)
-#> -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
-#> v dplyr     1.1.4     v readr     2.1.5
-#> v forcats   1.0.0     v stringr   1.5.1
-#> v ggplot2   3.5.1     v tibble    3.2.1
-#> v lubridate 1.9.3     v tidyr     1.3.1
-#> v purrr     1.0.2     
-#> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-#> x dplyr::filter() masks stats::filter()
-#> x dplyr::lag()    masks stats::lag()
-#> i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 gen_cor_unadjusted <- adjgencor("CAD", "MDD", NULL, "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", "Data/MDDAls2023.sumstats.gz", NULL, 0.15, 0.15, NULL, 0.15, 0.15, NULL, "REF/eur_w_ld_chr/")
-#> Warning: replacing previous import 'gdata::nobs' by 'lavaan::nobs' when loading
-#> 'GenomicSEM'
-#> Warning: replacing previous import 'gdata::last' by 'data.table::last' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'gdata::first' by 'data.table::first' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'gdata::env' by 'R.utils::env' when loading
-#> 'GenomicSEM'
-#> Warning: replacing previous import 'gdata::resample' by 'R.utils::resample' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'data.table::last' by 'dplyr::last' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'plyr::summarize' by 'dplyr::summarize' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'plyr::mutate' by 'dplyr::mutate' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'plyr::id' by 'dplyr::id' when loading
-#> 'GenomicSEM'
-#> Warning: replacing previous import 'plyr::arrange' by 'dplyr::arrange' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'plyr::summarise' by 'dplyr::summarise' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'data.table::first' by 'dplyr::first' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'plyr::rename' by 'dplyr::rename' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'plyr::desc' by 'dplyr::desc' when loading
-#> 'GenomicSEM'
-#> Warning: replacing previous import 'plyr::count' by 'dplyr::count' when loading
-#> 'GenomicSEM'
-#> Warning: replacing previous import 'gdata::combine' by 'dplyr::combine' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'data.table::between' by 'dplyr::between'
-#> when loading 'GenomicSEM'
-#> Warning: replacing previous import 'plyr::failwith' by 'dplyr::failwith' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'Matrix::tail' by 'utils::tail' when loading
-#> 'GenomicSEM'
-#> Warning: replacing previous import 'Rcpp::.DollarNames' by 'utils::.DollarNames'
-#> when loading 'GenomicSEM'
-#> Warning: replacing previous import 'Rcpp::prompt' by 'utils::prompt' when
-#> loading 'GenomicSEM'
-#> Warning: replacing previous import 'Matrix::head' by 'utils::head' when loading
-#> 'GenomicSEM'
-#> Warning: replacing previous import 'R.utils::timestamp' by 'utils::timestamp'
-#> when loading 'GenomicSEM'
-#> Warning: replacing previous import 'gdata::object.size' by 'utils::object.size'
-#> when loading 'GenomicSEM'
-#> Multivariate ld-score regression of 2 traits (Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt Data/MDDAls2023.sumstats.gz) began at: 2025-01-26 12:20:22
+#> Multivariate ld-score regression of 2 traits (Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt Data/MDDAls2023.sumstats.gz) began at: 2025-01-26 12:33:37
 #> Reading in LD scores
 #> Read in summary statistics [1/2] from: Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt
 #> Out of 1198398 SNPs, 1180102 remain after merging with LD-score files
@@ -131,17 +74,17 @@ gen_cor_unadjusted <- adjgencor("CAD", "MDD", NULL, "Data/CARDIoGRAMplusC4D_2022
 #> Total Liability Scale h2: 0.1057 (0.0038)
 #> Genetic Correlation Results
 #> Genetic Correlation between CAD and MDD: 0.2462 (0.0188)
-#> LDSC finished running at 2025-01-26 12:20:45
-#> Running LDSC for all files took 0 minutes and 22 seconds
+#> LDSC finished running at 2025-01-26 12:34:02
+#> Running LDSC for all files took 0 minutes and 24 seconds
 #> [1] "Running primary model"
 #> [1] "Calculating CFI"
 #> [1] "Calculating Standardized Results"
 #> [1] "Calculating SRMR"
 #> elapsed 
-#>    0.35 
+#>    0.36 
 #> [1] "Model fit statistics are all printed as NA as you have specified a fully saturated model (i.e., df = 0)"
 gen_cor_adjusted <- adjgencor("CAD", "MDD", "BMI", "Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt", "Data/MDDAls2023.sumstats.gz", "Data/GIANT_UKB_2018_BMI_munged.txt", 0.15, 0.15, NA, 0.15, 0.15, NA, "REF/eur_w_ld_chr/")
-#> Multivariate ld-score regression of 3 traits (Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt Data/MDDAls2023.sumstats.gz Data/GIANT_UKB_2018_BMI_munged.txt) began at: 2025-01-26 12:20:45
+#> Multivariate ld-score regression of 3 traits (Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt Data/MDDAls2023.sumstats.gz Data/GIANT_UKB_2018_BMI_munged.txt) began at: 2025-01-26 12:34:02
 #> Reading in LD scores
 #> Read in summary statistics [1/3] from: Data/CARDIoGRAMplusC4D_2022_CAD_EUR_munged.txt
 #> Out of 1198398 SNPs, 1180102 remain after merging with LD-score files
@@ -216,46 +159,19 @@ gen_cor_adjusted <- adjgencor("CAD", "MDD", "BMI", "Data/CARDIoGRAMplusC4D_2022_
 #> Genetic Correlation between CAD and MDD: 0.2462 (0.0188)
 #> Genetic Correlation between CAD and BMI: 0.2906 (0.0184)
 #> Genetic Correlation between MDD and BMI: 0.1385 (0.016)
-#> LDSC finished running at 2025-01-26 12:21:12
-#> Running LDSC for all files took 0 minutes and 26 seconds
+#> LDSC finished running at 2025-01-26 12:34:46
+#> Running LDSC for all files took 0 minutes and 43 seconds
 #> [1] "Running primary model"
 #> [1] "Calculating CFI"
 #> [1] "Calculating Standardized Results"
 #> [1] "Calculating SRMR"
 #> elapsed 
-#>    0.58 
+#>    0.41 
 #> [1] "Model fit statistics are all printed as NA as you have specified a fully saturated model (i.e., df = 0)"
-bind_rows(gen_cor_unadjusted,gen_cor_unadjusted)
+bind_rows(gen_cor_unadjusted, gen_cor_adjusted)
 #> # A tibble: 2 x 6
 #>   TraitX TraitY    rg  rg_se        P Adjust_for
 #>   <chr>  <chr>  <dbl>  <dbl>    <dbl> <chr>     
 #> 1 CAD    MDD    0.246 0.0186 3.85e-40 Nothing   
-#> 2 CAD    MDD    0.246 0.0186 3.85e-40 Nothing
+#> 2 CAD    MDD    0.217 0.0196 1.15e-28 BMI
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
