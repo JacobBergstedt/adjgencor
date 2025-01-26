@@ -1,5 +1,5 @@
 Package: adjgencor
-Title: Estimating adjuted genetic correlation
+Title: Estimating adjusted genetic correlation
 Version: 0.0.0.9000
 Authors@R: 
     person("Jacob", "Bergstedt", , "jacob.bergstedt@ki.se", role = c("aut", "cre"),
